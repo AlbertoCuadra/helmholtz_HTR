@@ -1,3 +1,4 @@
+# Helmholtz HTR
 Routine to compute the dissipation, dissipation rate, and the solenoidal and compressive parts of a three-dimensional velocity field of a DNS obtained using the Hypersonic Task-based Research (HTR) solver [1] (see the GitHub repository [2]).
     
 The calculation of the Helmholtz-Hodge decomposition using fast Fourier transform [3] is based on Ref. [4] and has been rewritten in MATLAB.
