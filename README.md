@@ -13,3 +13,6 @@ The calculation of the Helmholtz-Hodge decomposition using fast Fourier transfor
 2. Di Renzo, M., Fu, L., and Urzay, J., Hypersonic Task-based Research (HTR) solver for the Navier-Stokes equations at hypersonic Mach numbers including finite-rate chemistry for dissociating air and multicomponent transport, Github, 2022, Available: https://github.com/stanfordhpccenter/HTR-solver
 3. Johnson, S. G., Notes on FFT-based differentiation. MIT Applied Mathematics, Tech. Rep., 2011, Available: http://math.mit.edu/~stevenj/fft-deriv.pdf
 4. Xun, S., Helmholtz-Hodge decomposition using fft (Python), Github, 2018, Available: https://github.com/shixun22/helmholtz
+
+## Acknowledgments
+The Helmholtz-Hodge decomposition is based on the following repository: Xun Shi (2018). helmholtz (https://github.com/shixun22/helmholtz), Github. Retrieved March 15, 2023.
