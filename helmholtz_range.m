@@ -14,52 +14,82 @@
 %          PhD Candidate - Group Fluid Mechanics
 %          Universidad Carlos III de Madrid
 %                  
-% Last update Mar 15 2023
+% Last update Apr 05 2023
+
+clear; clc;
 
 % Definitions
-file_main = 'C:\Users\Alber\Mi unidad\Phd\Shocks\HTR\4605189\4605189\sample0'; % path data parent folder
-file_location_nodes = fullfile(file_main, 'cellCenter_grid\master.hdf');   % path grid file
-value = 52000:1000:63000; % folders tag
+file_main = 'C:\Users\Alber\Mi unidad\Phd\Shocks\HTR\HIT\sample0'; % Path data parent folder
+file_location_nodes = fullfile(file_main, 'cellCenter_grid\master.hdf'); % Path grid file
+value = 0:5000:110000; % Folders tag
+Tref = 300; % Temperature of reference [K]
+mu_ref = 5.692750425533111 * 1e-4; % Dynamic viscosity of reference [kg/(m-s)] or [Pa-s]
 
 % Miscellaneous
-slice = 40; % Slice to plot
-FPS = 60;   % Frames per second
+FLAG_SLICE = false; % Flag indicating to plot slice of the decomposed field
+slice = 40;         % Slice to plot
+FPS = 60;           % Frames per second
 
-% Calculate decomposed velocity field and dissipation ratio 
+% Calculate decomposed velocity field and dissipation ratio
 for i = length(value):-1:1
-    fprintf('Case %2d, ', i);
-    file_location = fullfile(file_main, sprintf('fluid_iter%010d', value(i)), 'master.hdf'); % 0,0,0-79,79,79
-    [eps_total(i), eps_ratio(i), time_norm(i), ...
-     V_solenoidal_x(:, :, :, i), V_solenoidal_y(:, : , :, i),...
-     V_compressive_x(:, :, :, i), V_compressive_y(:, : , :, i)...
-    ] = helmholtz(file_location, file_location_nodes);
+    fprintf('Case %2d:\n', i);
+    file_location = fullfile(file_main, sprintf('fluid_iter%010d', value(i)), 'master.hdf');
+    [eps_total(i), eps_ratio(i), time_norm(i),...
+     K(i), K_ratio(i),...
+     u_solenoidal(:, :, :, i), v_solenoidal(:, : , :, i),...
+     u_compressive(:, :, :, i), v_compressive(:, : , :, i),...
+     u_mean(i), v_mean(i), w_mean(i)] = helmholtz(file_location, file_location_nodes, Tref, mu_ref);
 end
 
 % Initialize figure
 set_figure();
-tiledlayout(1,2);
+tiledlayout(2,2);
 
 % Plot dissipation
 ax1 = nexttile;
 ax1 = set_figure(ax1);
-plot(time_norm, eps_total);
-xlabel('Time normalized, $t^* = t / \epsilon_l$', 'Interpreter', 'latex');
-ylabel('Dissipation, $\epsilon$', 'Interpreter', 'latex');
-title(ax1, 'Dissipation', 'Interpreter', 'latex')
+plot(time_norm, eps_total, 'LineWidth', 1.2);
+xlabel('$t / \epsilon_l$', 'Interpreter', 'latex');
+ylabel('$\epsilon$', 'Interpreter', 'latex');
 
 % Plot dissipation ratio
 ax2 = nexttile;
 ax2 = set_figure(ax2);
-plot(time_norm, eps_ratio);
-xlabel('Time normalized, $t^* = t / \epsilon_l$', 'Interpreter', 'latex');
-ylabel('Dissipation ratio, $\epsilon_d / \epsilon_s$', 'Interpreter', 'latex');
-title(ax2, 'Dissipation ratio', 'Interpreter', 'latex')
+plot(time_norm, eps_ratio, 'LineWidth', 1.2);
+xlabel('$t / \epsilon_l$', 'Interpreter', 'latex');
+ylabel('$\epsilon_d / \epsilon_s$', 'Interpreter', 'latex');
+
+% Plot turbulent kinetic energy
+ax3 = nexttile;
+ax3 = set_figure(ax3);
+plot(time_norm, K, 'LineWidth', 1.2);
+xlabel('$t / \epsilon_l$', 'Interpreter', 'latex');
+ylabel('$K$', 'Interpreter', 'latex');
+
+% Plot turbulent kinetic energy ratio
+ax4 = nexttile;
+ax4 = set_figure(ax4);
+plot(time_norm, K_ratio, 'LineWidth', 1.2);
+xlabel('$t / \epsilon_l$', 'Interpreter', 'latex');
+ylabel('$K_d / K_s$', 'Interpreter', 'latex');
+
+% Plot mean velocity field
+ax5 = set_figure();
+plot(time_norm, u_mean, time_norm, v_mean, time_norm, w_mean, 'LineWidth', 1.2);
+xlabel('$t / \epsilon_l$', 'Interpreter', 'latex');
+ylabel('$\langle {u}_i \rangle$', 'Interpreter', 'latex');
+leg_labels = {'$\langle u \rangle$', '$\langle v \rangle$', '$\langle w \rangle$'};
+legend(ax5, leg_labels, 'Interpreter', 'latex');
 
 % Plot slices of the decomposed field on the X-Y plane over time
-% set_figure();
-% for i = 1:length(value)
-%     plot_slice(V_solenoidal_x(:, : , :, i), V_solenoidal_y(:, : , :, i), V_compressive_x(:, : , :, i), V_compressive_y(:, : , :, i), size(V_compressive_x(:, :, :, 1)), slice);
-%     pause(1 / FPS);
-% end
+if ~FLAG_SLICE
+    return
+end
 
-
+set_figure();
+for i = 1:length(value)
+    plot_slice(u_solenoidal(:, : , :, i), v_solenoidal(:, : , :, i),...
+               u_compressive(:, : , :, i), v_compressive(:, : , :, i),...
+               size(u_compressive(:, :, :, 1)), slice);
+    pause(1 / FPS);
+end
