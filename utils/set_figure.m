@@ -11,6 +11,14 @@ function [ax, config, fig] = set_figure(varargin)
     %     * ax (axis): Axis of the standard figure
     %     * config (struct): Struct with default plot parameters
     %     * fig (figure): Standard figure
+    %
+    % Example:
+    %     [ax, config] = set_figure();
+    %     [ax, config] = set_figure(ax);
+    %     [ax, config] = set_figure(config);
+    %     [ax, config] = set_figure(ax, config);
+    %
+    % See also: plot_settings
 
     % Default values
     config = plot_settings();

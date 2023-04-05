@@ -2,15 +2,15 @@ function plot_slice(u_solenoidal, v_solenoidal, u_compressive, v_compressive, sz
     % Plot one slice of the decomposed field on X-Y plane
     %
     % Args:
-    %     u_solenoidal (3-D array): The solenoidal contribution of the velocity field in X-direction
-    %     v_solenoidal (3-D array): The solenoidal contribution of the velocity field in Y-direction
-    %     u_compressive (3-D array): The compressive contribution of the velocity field in X-direction
-    %     v_compressive (3-D array): The compressive contribution of the velocity field in Y-direction
+    %     u_solenoidal (float): 3-D array with the solenoidal contribution of the velocity field in X-direction
+    %     v_solenoidal (float): 3-D array with the solenoidal contribution of the velocity field in Y-direction
+    %     u_compressive (float): 3-D array with the compressive contribution of the velocity field in X-direction
+    %     v_compressive (float): 3-D array with the compressive contribution of the velocity field in Y-direction
     %     sz (3-element vector): The size of the input velocity field
     %     slice (int): The slice index to plot
     %
-    % Returns:
-    %     None
+    % Example:
+    %     plot_slice(u_solenoidal, v_solenoidal, u_compressive, v_compressive, sz, 1)
 
     % Set the quiver plot scaling factor
     plot_factor = 3;
