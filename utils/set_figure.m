@@ -2,19 +2,20 @@ function [ax, config, fig] = set_figure(varargin)
     % Initialize figure with a standard composition
     %
     % Optional Args:
-    %    * ax (axis):       Figure axis
-    %    * config (struct): Struct with default plot parameters
+    %     * ax (axis): Figure axis
+    %     * config (struct): Struct with default plot parameters
     %
     % Returns:
     %    Tuple containing
     %
-    %    * ax (axis):       Axis of the standard figure
-    %    * config (struct): Struct with default plot parameters
-    %    * fig (figure):    Standard figure
+    %     * ax (axis): Axis of the standard figure
+    %     * config (struct): Struct with default plot parameters
+    %     * fig (figure): Standard figure
 
     % Default values
     config = plot_settings();
     ax = [];
+    
     % Unpack input
     if nargin > 0
 
