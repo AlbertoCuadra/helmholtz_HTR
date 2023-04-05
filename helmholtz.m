@@ -229,7 +229,7 @@ function [eps_total, eps_ratio, time_norm,...
         %   w (float): 3D array with the z-component of the velocity field
         %
         % Returns:
-        %   value (float):  3D array with the dissipation
+        %   value (float): 3D array with the dissipation
         %
         % Example:
         %   value = dissipation(u, v, w);
