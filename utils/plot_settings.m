@@ -8,8 +8,8 @@ function self = plot_settings()
     self.description = 'Plot settings'; 
     % Variables
     self.position = get_monitor_positions(2); % Default figure position [pixels]
-    self.innerposition = [0.05 0.05 0.9 0.9]; % Set figure inner position [normalized]
-    self.outerposition = [0.05 0.05 0.9 0.9]; % Set figure outer position [normalized]
+    self.innerposition = [0.15 0.15 0.7 0.7]; % Set figure inner position [normalized]
+    self.outerposition = [0.15 0.15 0.7 0.7]; % Set figure outer position [normalized]
     self.linestyle = '-';                     % Set line style for plots
     self.symbolstyle = 'o';                   % Set symbol style for plots
     self.linewidth = 1.8;                     % Set line width for plots
