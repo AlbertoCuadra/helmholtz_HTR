@@ -1,7 +1,8 @@
 function [eps_total, eps_ratio, time_norm,...
           K, K_ratio, u_solenoidal, v_solenoidal,...
           u_compressive, v_compressive,...
-          u_mean, v_mean, w_mean] = helmholtz(file_location,...
+          u_mean, v_mean, w_mean,...
+          K_compressive, K_solenoidal] = helmholtz(file_location,...
                                               file_location_nodes,...
                                               T_ref,...
                                               mu_ref)
@@ -86,9 +87,9 @@ function [eps_total, eps_ratio, time_norm,...
     [u, v, w, sz] = read_3D(file_location, 'velocity');
     
     % Get mean velocity field
-    u_mean = mean(u, "all");
-    v_mean = mean(v, "all");
-    w_mean = mean(w, "all");
+    u_mean = mean(u, 'all');
+    v_mean = mean(v, 'all');
+    w_mean = mean(w, 'all');
     
     % Remove mean velocity
     u = u - mean(u, 'all');
@@ -105,7 +106,7 @@ function [eps_total, eps_ratio, time_norm,...
     l = L / 6; 
     
     % Velocity rms
-    vel_rms = sqrt(mean(u.^2 + v.^2 + w.^2, "all") / 3);
+    vel_rms = sqrt(mean(u.^2 + v.^2 + w.^2, 'all') / 3);
 
     % Eddy turnover time
     eddy_turnover = l / vel_rms;
@@ -217,7 +218,7 @@ function [eps_total, eps_ratio, time_norm,...
     K_compressive = compute_tke(u_compressive, v_compressive, w_compressive, 1);
     
     % Compute TKE ratio
-    K_ratio = K_solenoidal ./ K_compressive;
+    K_ratio = K_compressive ./ K_solenoidal;
     
     % NESTED FUNCTIONS
     function value = dissipation(u, v, w)
