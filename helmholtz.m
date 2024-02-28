@@ -2,11 +2,9 @@ function [eps_total, eps_ratio, time_norm,...
           K, K_ratio, u_solenoidal, v_solenoidal,...
           u_dilatational, v_dilatational,...
           u_mean, v_mean, w_mean,...
-          K_dilatational, K_solenoidal, chi] = helmholtz(file_location,...
-                                                file_location_nodes,...
-                                                T_ref,...
-                                                mu_ref)
-
+          K_dilatational, K_solenoidal,...
+          chi, Mt_mean] = helmholtz(file_location, file_location_nodes,...
+                                    T_ref, mu_ref)
     % Helmholtz-Hodge decomposition of a 3D velocity field into its
     % solenoidal and dilatational parts using fast Fourier transform [1].
     % 
@@ -48,6 +46,7 @@ function [eps_total, eps_ratio, time_norm,...
     %     * K_dilatational (float): Dilatational contribution of the TKE
     %     * K_solenoidal (float): Solenoidal contribution of the TKE
     %     * chi (float): Ratio density deviations / velocity perturbations
+    %     * Mt (float): Turbulent Mach number
     %
     % Example:
     %     [eps_total, eps_ratio, time_norm,...
@@ -90,8 +89,8 @@ function [eps_total, eps_ratio, time_norm,...
     [p_delta, p_mean] = compute_fluctuation(p);
 
     % Compute mean sound speed
-    sound_mean = sqrt(gamma_mean * p_mean ./ rho_mean);
-
+    sound_mean = sqrt(gamma_mean * T_mean);
+    
     % Compute dynamic viscosity field using the Sutherland's law
     mu = compute_mu_sutherland(T, S, T_ref, mu_ref);
 
@@ -113,7 +112,7 @@ function [eps_total, eps_ratio, time_norm,...
 
     % Module and root mean square of the velocity field * sqrt(rho)
     vel = sqrt(wx.^2 + wy.^2 + wz.^2);
-    vel_rms = sqrt( (wx.^2 + wy.^2 + wz.^2) / 3);
+    vel_rms = sqrt( mean(wx.^2 + wy.^2 + wz.^2, 'all') / 3);
 
     % Get turbulent Mach number
     Mt = sqrt(3) * vel_rms / sound_mean;
@@ -122,14 +121,9 @@ function [eps_total, eps_ratio, time_norm,...
     fprintf('Turbulent Mach:        %.2e\n', Mt_mean);
 
     % Compute ratio density deviations / velocity perturbations (for LIA)
-    % chi_ast = mean(rho_delta .* vel, 'all') / (rho_mean * sound_mean);
-    % chi = chi_ast / Mt_mean^2;
-    % chi = -abs(mean(rho_delta ./ Mt, 'all') / rho_mean);
-
-    % vel = u;
     chi = (mean(rho_delta .* vel, 'all') / (rho_mean * sound_mean)) / (mean(vel .* vel, 'all') / sound_mean^2);
     % chi = -(mean(T_delta .* vel, 'all') / (T_mean * sound_mean)) / (mean(vel .* vel, 'all') / sound_mean^2);
-
+    
     fprintf('chi (Cuadra):          %.2e\n', chi);
     fprintf('chi (Sinha):           %.2e\n', chi * (wx_mean / sound_mean));
 
