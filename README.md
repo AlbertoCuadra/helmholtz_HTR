@@ -1,3 +1,11 @@
+> ⚠️ **Notice:** This repository is now **archived** and no longer maintained.
+>   
+> A **new and more complete version** of this code is available as part of the [**Combustion Toolbox**](https://github.com/CombustionToolbox/combustion_toolbox), a modular MATLAB framework for thermochemical and turbulence analysis. 
+>  
+> The Helmholtz-Hodge decomposition and turbulence postprocessing routines, originally developed here, are now part of the `CT-TURBULENCE` module.  
+>  
+> 📚 Learn more in the [Combustion Toolbox documentation](https://combustion-toolbox-website.readthedocs.io).
+
 # Helmholtz HTR
 Routine to compute the dissipation, dissipation rate, and the solenoidal and compressive parts of a three-dimensional velocity field of a DNS obtained using the Hypersonic Task-based Research (HTR) solver [1] (see the GitHub repository [2]).
     
